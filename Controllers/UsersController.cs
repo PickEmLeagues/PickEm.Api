@@ -9,12 +9,12 @@ namespace PickEm.Api.Controllers;
 
 [ApiController]
 [Route("v1/[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UsersController> _logger;
     private readonly DataContext _context;
 
-    public UserController(ILogger<UserController> logger, DataContext context)
+    public UsersController(ILogger<UsersController> logger, DataContext context)
     {
         _logger = logger;
         _context = context;
