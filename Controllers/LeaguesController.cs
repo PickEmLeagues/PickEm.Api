@@ -7,6 +7,8 @@ using PickEm.Api.Mappers;
 
 namespace PickEm.Api.Controllers;
 
+[ApiController]
+[Route("v1/[controller]")]
 public class LeaguesController : ControllerBase
 {
     private readonly ILogger<LeaguesController> _logger;
