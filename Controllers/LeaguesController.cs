@@ -80,7 +80,7 @@ public class LeaguesController : ControllerBase
         var newLeague = new League
         {
             Name = league.Name,
-            IsPublic = league.IsPublic,
+            IsPublic = league.IsPublic ?? false,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             Sport = league.Sport,
@@ -111,7 +111,7 @@ public class LeaguesController : ControllerBase
         }
 
         existingLeague.Name = league.Name;
-        existingLeague.IsPublic = league.IsPublic;
+        existingLeague.IsPublic = league.IsPublic ?? existingLeague.IsPublic;
         existingLeague.UpdatedAt = DateTime.UtcNow;
 
         _context.Leagues.Update(existingLeague);
