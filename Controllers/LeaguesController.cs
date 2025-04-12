@@ -21,7 +21,6 @@ public class LeaguesController : ControllerBase
     }
 
     [HttpGet]
-    [Route("v1/leagues")]
     public async Task<IActionResult> GetLeagues()
     {
         _logger.LogInformation("Fetching all leagues");
@@ -29,7 +28,7 @@ public class LeaguesController : ControllerBase
         return Ok(leagues.MapToDto());
     }
     [HttpGet]
-    [Route("v1/leagues/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> GetLeague(long id)
     {
         _logger.LogInformation($"Fetching league with ID: {id}");
@@ -52,7 +51,7 @@ public class LeaguesController : ControllerBase
         return Ok(league.MapToDto());
     }
     [HttpGet]
-    [Route("v1/leagues/{id}/game/{gameId}")]
+    [Route("{id}/game/{gameId}")]
     public async Task<IActionResult> GetLeagueGame(long id, long gameId)
     {
         _logger.LogInformation($"Fetching game with ID: {gameId} for league with ID: {id}");
@@ -70,7 +69,6 @@ public class LeaguesController : ControllerBase
     }
 
     [HttpPost]
-    [Route("v1/leagues")]
     public async Task<IActionResult> CreateLeague([FromBody] LeagueDto league)
     {
         _logger.LogInformation("Creating a new league");
@@ -97,7 +95,7 @@ public class LeaguesController : ControllerBase
     }
 
     [HttpPut]
-    [Route("v1/leagues/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> UpdateLeague(long id, [FromBody] LeagueDto league)
     {
         _logger.LogInformation($"Updating league with ID: {id}");
@@ -123,7 +121,7 @@ public class LeaguesController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("v1/leagues/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> DeleteLeague(long id)
     {
         _logger.LogInformation($"Deleting league with ID: {id}");
