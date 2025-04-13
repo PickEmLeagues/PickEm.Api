@@ -35,7 +35,7 @@ public class RabbitMqEmitter : IEventEmitter
         }
     }
 
-    public async Task EmitAsync(IEventMessage eventData)
+    public async Task EmitAsync<T>(T eventData)
     {
         if (_channel == null)
         {
