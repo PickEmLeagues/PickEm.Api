@@ -12,7 +12,8 @@
 				"BASE_PATH": "/api",
 				"ENABLE_SWAGGER": "true",
 				"MIGRATE_DATABASE": "true",
-				"ALLOWED_ORIGINS": "http://localhost:3000, http://localhost:8080"
+				"ALLOWED_ORIGINS": "http://localhost:3000, http://localhost:8080",
+				"RABBITMQ_URI": " amqp://default_user_roi6OTkTOdHvk0clP6D:5WOWH_aPNtxqXWR4mb4qIMhTFzPkWwZl@rabbitmq-cluster.pickem.svc:5672/"
 			}
 		},
 		"https": {
@@ -26,7 +27,8 @@
 				"BASE_PATH": "/api",
 				"ENABLE_SWAGGER": "true",
 				"MIGRATE_DATABASE": "true",
-				"ALLOWED_ORIGINS": "http://localhost:3000, http://localhost:8080"
+				"ALLOWED_ORIGINS": "http://localhost:3000, http://localhost:8080",
+				"RABBITMQ_URI": " amqp://default_user_roi6OTkTOdHvk0clP6D:5WOWH_aPNtxqXWR4mb4qIMhTFzPkWwZl@rabbitmq-cluster.pickem.svc:5672/"
 			}
 		}
 	}

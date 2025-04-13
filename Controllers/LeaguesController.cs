@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using PickEm.Api.DataAccess;
 using PickEm.Api.Domain;
 using PickEm.Api.Dto;
+using PickEm.Api.Eventing;
 using PickEm.Api.Mappers;
+using PickEm.EventProcessor.Events;
+using PickEm.EventProcessor.Events.Enums;
 
 namespace PickEm.Api.Controllers;
 
@@ -13,9 +16,11 @@ public class LeaguesController : ControllerBase
 {
     private readonly ILogger<LeaguesController> _logger;
     private readonly DataContext _context;
+    private readonly IEventEmitter _eventEmitter;
 
-    public LeaguesController(ILogger<LeaguesController> logger, DataContext context)
+    public LeaguesController(ILogger<LeaguesController> logger, DataContext context, IEventEmitter eventEmitter)
     {
+        _eventEmitter = eventEmitter;
         _logger = logger;
         _context = context;
     }
@@ -90,6 +95,12 @@ public class LeaguesController : ControllerBase
 
         await _context.Leagues.AddAsync(newLeague);
         await _context.SaveChangesAsync();
+        await _eventEmitter.EmitAsync(new LeagueCreatedEvent
+        {
+            LeagueId = newLeague.Id,
+            CreatedAt = DateTime.UtcNow,
+            EventType = EventType.LeagueCreated
+        });
 
         return CreatedAtAction(nameof(GetLeague), new { id = newLeague.Id }, newLeague.MapToDto());
     }

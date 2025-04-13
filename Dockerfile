@@ -31,6 +31,7 @@ ENV BASE_PATH="/api"
 ENV ENABLE_SWAGGER="false"
 ENV MIGRATE_DATABASE="false"
 ENV ConnectionStrings__DefaultConnection=""
+ENV RABBITMQ_URI="amqp://guest:guest@localhost:5672"
 
 # start
 ENTRYPOINT ["dotnet", "PickEm.Api.dll"]

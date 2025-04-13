@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PickEm.Api.DataAccess;
+using PickEm.Api.Eventing;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddDbContext<DataContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSingleton<IEventEmitter>(sp =>
+{
+    var eventEmitter = new RabbitMqEmitter("pickem");
+    var uri = Environment.GetEnvironmentVariable("RABBITMQ_URI") ?? "localhost";
+    eventEmitter.ConnectAsync(uri).Wait();
+    return eventEmitter;
+});
 builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
