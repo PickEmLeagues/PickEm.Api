@@ -15,6 +15,8 @@ public static class GameMapper
         return new GameDto
         {
             Id = game.Id,
+            Season = game.Season,
+            Week = game.Week,
             HomeTeam = game.HomeTeam,
             AwayTeam = game.AwayTeam,
             StartTime = game.StartTime,

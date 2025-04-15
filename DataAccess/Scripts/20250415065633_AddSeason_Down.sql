@@ -1,0 +1,10 @@
+﻿START TRANSACTION;
+ALTER TABLE "Games" DROP COLUMN "Season";
+
+ALTER TABLE "Games" DROP COLUMN "Week";
+
+DELETE FROM "__EFMigrationsHistory"
+WHERE "MigrationId" = '20250415065633_AddSeason';
+
+COMMIT;
+
