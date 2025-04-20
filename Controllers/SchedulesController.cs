@@ -27,6 +27,7 @@ public class SchedulesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> ImportSchedule([FromForm] IFormFile file)
     {
+        _logger.LogInformation("Importing schedule file: {FileName}", file?.FileName);
         if (file == null || file.Length == 0)
         {
             return BadRequest("File cannot be null or empty.");
@@ -45,6 +46,7 @@ public class SchedulesController : ControllerBase
             EventType = EventType.ScheduleImported
         });
 
+        _logger.LogInformation("Schedule file imported successfully: {FileName}", fileName);
         return Ok(new { Message = "Schedule imported successfully." });
     }
 }
