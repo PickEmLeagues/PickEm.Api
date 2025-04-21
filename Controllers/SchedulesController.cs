@@ -1,6 +1,8 @@
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using PickEm.Api.Dto;
 using PickEm.Api.Eventing;
 using PickEm.Api.Eventing.Events;
 using PickEm.Api.Services;
@@ -33,20 +35,30 @@ public class SchedulesController : ControllerBase
             return BadRequest("File cannot be null or empty.");
         }
 
-        var fileName = await _fileService.UploadFileAsync(file);
-        if (string.IsNullOrEmpty(fileName))
+        // Read the contents of the file and emit an event for each game
+        using var reader = new StreamReader(file.OpenReadStream());
+        var jsonString = await reader.ReadToEndAsync();
+        var schedules = JsonSerializer.Deserialize<List<ScheduleDto>>(jsonString);
+
+        if (schedules == null || schedules.Count == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Failed to upload file.");
+            return BadRequest("Invalid schedule data.");
         }
 
-        await _eventEmitter.EmitAsync(new ScheduleImportedEvent
+        foreach (var schedule in schedules)
         {
-            FilePath = fileName,
-            CreatedAt = DateTime.UtcNow,
-            EventType = EventType.ScheduleImported
-        });
+            foreach (var game in schedule.ScheduledGames)
+            {
+                _logger.LogInformation("Processing game: {GameId}", game);
+                await _eventEmitter.EmitAsync(new ScheduleImportedEvent
+                {
+                    Game = game,
+                    CreatedAt = DateTime.UtcNow,
+                    EventType = EventType.ScheduleImported
+                });
+            }
+        }
 
-        _logger.LogInformation("Schedule file imported successfully: {FileName}", fileName);
         return Ok(new { Message = "Schedule imported successfully." });
     }
 }
