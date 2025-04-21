@@ -1,8 +1,11 @@
+using PickEm.Api.Domain.Enums;
+
 namespace PickEm.Api.Dto;
 
 public class GameDto
 {
     public long Id { get; set; }
+    public SportType Sport { get; set; }
     public string Season { get; set; } = string.Empty;
     public int? Week { get; set; }
     public DateTime StartTime { get; set; }

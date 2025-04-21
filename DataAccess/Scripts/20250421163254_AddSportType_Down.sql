@@ -1,0 +1,8 @@
+﻿START TRANSACTION;
+ALTER TABLE "Games" DROP COLUMN "Sport";
+
+DELETE FROM "__EFMigrationsHistory"
+WHERE "MigrationId" = '20250421163254_AddSportType';
+
+COMMIT;
+
