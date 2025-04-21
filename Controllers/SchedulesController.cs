@@ -39,6 +39,7 @@ public class SchedulesController : ControllerBase
         using var reader = new StreamReader(file.OpenReadStream());
         var jsonString = await reader.ReadToEndAsync();
         var schedules = JsonSerializer.Deserialize<List<ScheduleDto>>(jsonString);
+        _logger.LogInformation("Deserialized schedule data {data}", jsonString);
 
         if (schedules == null || schedules.Count == 0)
         {
@@ -49,7 +50,7 @@ public class SchedulesController : ControllerBase
         {
             foreach (var game in schedule.ScheduledGames)
             {
-                _logger.LogInformation("Processing game: {GameId}", game);
+                _logger.LogInformation("Processing game: {Game}", game);
                 await _eventEmitter.EmitAsync(new ScheduleImportedEvent
                 {
                     Game = game,
