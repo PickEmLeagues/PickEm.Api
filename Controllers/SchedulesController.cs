@@ -53,6 +53,7 @@ public class SchedulesController : ControllerBase
                 _logger.LogInformation("Processing game: {Game}", game);
                 await _eventEmitter.EmitAsync(new ScheduleImportedEvent
                 {
+                    Sport = schedule.SportType,
                     Game = game,
                     CreatedAt = DateTime.UtcNow,
                     EventType = EventType.ScheduleImported
