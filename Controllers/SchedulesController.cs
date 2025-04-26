@@ -59,7 +59,7 @@ public class SchedulesController : ControllerBase
         return Ok(schedules.MapToDto());
     }
 
-    [HttpPost]
+    [HttpPost("import")]
     public async Task<IActionResult> ImportSchedule([FromForm] IFormFile file)
     {
         _logger.LogInformation("Importing schedule file: {FileName}", file?.FileName);
@@ -95,5 +95,53 @@ public class SchedulesController : ControllerBase
         }
 
         return Ok(new { Message = "Schedule imported successfully." });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteSchedule(long id)
+    {
+        _logger.LogInformation("Deleting schedule with ID: {Id}", id);
+        var game = await _context.Games.FindAsync(id);
+        if (game == null)
+        {
+            return NotFound("Schedule not found.");
+        }
+
+        _context.Games.Remove(game);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { Message = "Schedule deleted successfully." });
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateSchedule(long id, [FromBody] GameDto gameDto)
+    {
+        _logger.LogInformation("Updating schedule with ID: {Id}", id);
+        if (gameDto == null)
+        {
+            return BadRequest("Game data cannot be null.");
+        }
+
+        var game = await _context.Games.FindAsync(id);
+        if (game == null)
+        {
+            return NotFound("Schedule not found.");
+        }
+
+        game.HomeScore = gameDto.HomeScore ?? game.HomeScore;
+        game.AwayScore = gameDto.AwayScore ?? game.AwayScore;
+        game.IsFinal = gameDto.IsFinal ?? game.IsFinal;
+        game.OddsClosed = gameDto.OddsClosed ?? game.OddsClosed;
+        game.HomeOdds = gameDto.HomeOdds ?? game.HomeOdds;
+        game.AwayOdds = gameDto.AwayOdds ?? game.AwayOdds;
+        game.DrawOdds = gameDto.DrawOdds ?? game.DrawOdds;
+        game.StartTime = gameDto.StartTime ?? game.StartTime;
+        game.Season = gameDto.Season ?? game.Season;
+        game.Week = gameDto.Week ?? game.Week;
+        game.UpdatedAt = DateTime.UtcNow;
+
+        _context.Games.Update(game);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { Message = "Schedule updated successfully." });
     }
 }
