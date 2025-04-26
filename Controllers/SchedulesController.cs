@@ -16,7 +16,7 @@ using PickEm.EventProcessor.Events.Enums;
 namespace PickEm.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("v1/[controller]")]
 public class SchedulesController : ControllerBase
 {
     private readonly ILogger<SchedulesController> _logger;
