@@ -5,8 +5,7 @@ namespace PickEm.Api.Domain;
 public class Game
 {
     public long Id { get; set; }
-    public SportType Sport { get; set; }
-    public string Season { get; set; } = string.Empty;
+    public long SportId { get; set; }
     public int Week { get; set; }
     public DateTime StartTime { get; set; }
     public string HomeTeam { get; set; } = string.Empty;
@@ -20,4 +19,6 @@ public class Game
     public decimal DrawOdds { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    public virtual Sport Sport { get; set; }
 }

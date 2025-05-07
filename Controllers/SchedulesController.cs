@@ -34,23 +34,24 @@ public class SchedulesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetSchedules(SportType? sportType = null)
+    public async Task<IActionResult> GetSchedules(long? sportId = null)
     {
-        _logger.LogInformation("Fetching schedules for sport type: {SportType}", sportType);
+        _logger.LogInformation("Fetching schedules for sport type: {SportType}", sportId);
 
-        if (sportType != null && !Enum.IsDefined(typeof(SportType), sportType))
+        if (sportId < 0)
         {
             return BadRequest("Invalid sport type.");
         }
+
         IEnumerable<Game> schedules;
 
-        if (sportType == null)
+        if (sportId == null)
         {
             schedules = await _context.Games.ToListAsync();
         }
         else
         {
-            schedules = await _context.Games.Where(g => g.Sport == sportType).ToListAsync();
+            schedules = await _context.Games.Where(g => g.SportId == sportId).OrderBy(g => g.StartTime).ToListAsync();
         }
         if (schedules == null || !schedules.Any())
         {
@@ -81,12 +82,27 @@ public class SchedulesController : ControllerBase
 
         foreach (var schedule in schedules)
         {
+            var sport = await _context.Sports.FirstOrDefaultAsync(s => s.Name == schedule.SportInfo.Name && s.Season == schedule.SportInfo.Season);
+            if (sport == null)
+            {
+                sport = new Sport
+                {
+                    Name = schedule.SportInfo.Name,
+                    Season = schedule.SportInfo.Season,
+                    StartDate = schedule.SportInfo.StartDate,
+                    EndDate = schedule.SportInfo.EndDate,
+                    Week = schedule.SportInfo.Week ?? 0,
+                };
+                _context.Sports.Add(sport);
+                await _context.SaveChangesAsync();
+            }
+
             foreach (var game in schedule.ScheduledGames)
             {
                 _logger.LogInformation("Processing game: {Game}", game);
                 await _eventEmitter.EmitAsync(new ScheduleImportedEvent
                 {
-                    Sport = schedule.SportType,
+                    SportId = sport.Id,
                     Game = game,
                     CreatedAt = DateTime.UtcNow,
                     EventType = EventType.ScheduleImported
@@ -135,7 +151,6 @@ public class SchedulesController : ControllerBase
         game.AwayOdds = gameDto.AwayOdds ?? game.AwayOdds;
         game.DrawOdds = gameDto.DrawOdds ?? game.DrawOdds;
         game.StartTime = gameDto.StartTime ?? game.StartTime;
-        game.Season = gameDto.Season ?? game.Season;
         game.Week = gameDto.Week ?? game.Week;
         game.UpdatedAt = DateTime.UtcNow;
 

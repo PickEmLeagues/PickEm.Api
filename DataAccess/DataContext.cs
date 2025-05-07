@@ -11,9 +11,10 @@ public class DataContext : DbContext
 
     public DbSet<Game> Games { get; set; } = null!;
     public DbSet<League> Leagues { get; set; } = null!;
-    public DbSet<GameLeague> Schedules { get; set; } = null!;
+    public DbSet<LeagueGame> Schedules { get; set; } = null!;
     public DbSet<Pick> Picks { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Sport> Sports { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

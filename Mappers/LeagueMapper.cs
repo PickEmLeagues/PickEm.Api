@@ -17,7 +17,7 @@ public static class LeagueMapper
         {
             Id = league.Id,
             Name = league.Name,
-            Sport = league.Sport,
+            Sport = league.Sport.MapToDto(),
             CreatedAt = league.CreatedAt,
             UpdatedAt = league.UpdatedAt,
             IsDeleted = league.IsDeleted,

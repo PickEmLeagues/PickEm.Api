@@ -3,16 +3,16 @@ using PickEm.Api.Dto;
 
 namespace PickEm.Api.Mappers;
 
-public static class GameLeagueMapper
+public static class LeagueGameMapper
 {
-    public static GameLeagueDto MapToDto(this GameLeague gameLeague)
+    public static LeagueGameDto MapToDto(this LeagueGame gameLeague)
     {
         if (gameLeague == null)
         {
             return null;
         }
 
-        return new GameLeagueDto
+        return new LeagueGameDto
         {
             Id = gameLeague.Id,
             PicksClosed = gameLeague.PicksClosed,
@@ -22,7 +22,7 @@ public static class GameLeagueMapper
     }
 
 
-    public static IEnumerable<GameLeagueDto> MapToDto(this IEnumerable<GameLeague> gameLeagues)
+    public static IEnumerable<LeagueGameDto> MapToDto(this IEnumerable<LeagueGame> gameLeagues)
     {
         if (gameLeagues == null)
         {

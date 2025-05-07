@@ -13,6 +13,6 @@ public class Pick
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }
 
-    public virtual GameLeague Game { get; set; } = null!;
+    public virtual LeagueGame Game { get; set; } = null!;
     public virtual User User { get; set; } = null!;
 }

@@ -1,6 +1,6 @@
 namespace PickEm.Api.Domain;
 
-public class GameLeague
+public class LeagueGame
 {
     public long Id { get; set; }
     public long GameId { get; set; }

@@ -1,6 +1,6 @@
 namespace PickEm.Api.Dto;
 
-public class GameLeagueDto
+public class LeagueGameDto
 {
     public long Id { get; set; }
     public bool PicksClosed { get; set; }

@@ -46,6 +46,7 @@ public class LeaguesController : ControllerBase
             .Include(l => l.Members)
             .Include(l => l.Schedule)
             .ThenInclude(s => s.Game)
+            .Include(l => l.Sport)
             .FirstOrDefaultAsync(l => l.Id == id && !l.IsDeleted);
 
         if (league == null)
@@ -88,7 +89,7 @@ public class LeaguesController : ControllerBase
             IsPublic = league.IsPublic ?? false,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Sport = league.Sport,
+            SportId = league.SportId,
             OwnerId = league.OwnerId,
             IsDeleted = false,
         };

@@ -6,6 +6,6 @@ namespace PickEm.Api.Eventing.Events;
 
 public class ScheduleImportedEvent : EventMessage
 {
-    public SportType Sport { get; set; }
+    public long SportId { get; set; }
     public ScheduledGameDto Game { get; set; } = new();
 }
